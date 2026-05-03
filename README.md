@@ -2,6 +2,16 @@
 
 ![Platform](https://img.shields.io/badge/platform-Chromium%20%7C%20Windows-lightgrey)
 ![License](https://img.shields.io/badge/license-see_LICENSE-blue)
+![Status](https://img.shields.io/badge/status-已归档--仅供参考-orange)
+
+> ⚠️ **维护状态声明**
+>
+> **若 Windsurf 未更新其注册/认证机制，本项目将不再继续维护。**
+>
+> - 本项目代码仅供参考与学习研究，**不适合日常生产环境使用**。
+> - 作者已转移精力至其他项目，**不再主动更新或修复本仓库**。
+> - 如遇功能异常，请优先检查 Windsurf 官方是否已变更接口或 DOM 结构。
+> - 欢迎 Fork 自行修改，但不接受新特性 PR。
 
 本仓库包含两个可配合使用的部分：**浏览器扩展（批量完成网站注册流程）**与 **桌面管理程序（本地账号库、会话刷新、IDE 切换）**。下文说明如何安装使用、如何按需配置、以及二者在实现上的底层逻辑（不涉及任何密钥、令牌或私密路径的罗列）。
 
