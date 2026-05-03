@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      width: 380px;
+      min-height: 200px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      padding: 16px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #2a2a4a;
+    }
+    .header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #00d4aa;
+    }
+    .header .version {
+      font-size: 11px;
+      color: #666;
+      margin-left: auto;
+    }
+    .control {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .control input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid #3a3a5a;
+      border-radius: 6px;
+      background: #0f0f23;
+      color: #e0e0e0;
+      font-size: 14px;
+      outline: none;
+    }
+    .control input:focus { border-color: #00d4aa; }
+    .control input::placeholder { color: #555; }
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: #00d4aa; color: #1a1a2e; }
+    .btn-primary:hover { background: #00eabb; }
+    .btn-primary:disabled { background: #3a3a5a; color: #666; cursor: not-allowed; }
+    .btn-danger { background: #ff4757; color: white; }
+    .btn-danger:hover { background: #ff6b7a; }
+    .status {
+      background: #0f0f23;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .status .label { color: #888; }
+    .status .value { color: #00d4aa; font-weight: 600; }
+    .progress-bar {
+      width: 100%;
+      height: 4px;
+      background: #2a2a4a;
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .progress-bar .fill {
+      height: 100%;
+      background: #00d4aa;
+      border-radius: 2px;
+      transition: width 0.3s;
+    }
+    .results {
+      max-height: 250px;
+      overflow-y: auto;
+      margin-top: 8px;
+    }
+    .result-item {
+      background: #0f0f23;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-bottom: 6px;
+      font-size: 12px;
+      border-left: 3px solid #00d4aa;
+    }
+    .result-item .email { color: #00d4aa; font-weight: 600; }
+    .result-item .password { color: #aaa; }
+    .result-item .copy-btn {
+      float: right;
+      background: none;
+      border: 1px solid #3a3a5a;
+      color: #888;
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .result-item .copy-btn:hover { border-color: #00d4aa; color: #00d4aa; }
+    .empty { color: #555; font-size: 12px; text-align: center; padding: 20px; }
+    .export-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 8px;
+      background: #2a2a4a;
+      border: 1px solid #3a3a5a;
+      border-radius: 6px;
+      color: #e0e0e0;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .export-btn:hover { border-color: #00d4aa; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Windsurf Auto Register</h1>
+    <span class="version">v1.0</span>
+  </div>
+
+  <div class="control">
+    <input type="number" id="count" value="1" min="1" max="100" placeholder="Count">
+    <button class="btn btn-primary" id="startBtn">Start</button>
+    <button class="btn btn-danger" id="stopBtn" style="display:none">Stop</button>
+  </div>
+
+  <div class="status" id="statusBox">
+    <div><span class="label">Status: </span><span class="value" id="statusText">Idle</span></div>
+    <div><span class="label">Progress: </span><span class="value" id="progressText">0 / 0</span></div>
+    <div><span class="label">Current: </span><span class="value" id="currentText">-</span></div>
+    <div class="progress-bar"><div class="fill" id="progressBar" style="width:0%"></div></div>
+  </div>
+
+  <div id="resultsSection" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <span style="font-size:13px;font-weight:600">Results</span>
+      <button class="export-btn" id="exportBtn" style="width:auto;padding:4px 12px;margin:0">Export TXT</button>
+    </div>
+    <div class="results" id="resultsList"></div>
+  </div>
+
+  <div class="empty" id="emptyMsg">No results yet. Click Start to begin.</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

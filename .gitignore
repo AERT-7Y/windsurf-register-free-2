@@ -1,0 +1,47 @@
+# 依赖（体积大且可 npm install 还原）
+node_modules/
+
+# Electron / 脚本运行时在仓库内生成的账号库与工作数据（含密码与 token）
+data/
+**/data/*.db
+*.db
+
+# 环境与密钥占位（请勿把真实 .env 提交上来）
+.env
+.env.*
+!.env.example
+
+# 桌面程序若在 windsurf-auto-free-main  cwd 下落库
+windsurf-auto-free-main/data/
+
+# 运行时可能生成的临时 PowerShell（若未被 delete）
+**/temp_*.ps1
+
+# 操作系统与编辑器
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# 日志与调试
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# 构建产物（若后续增加打包）
+dist/
+build/
+out/
+release/
+
+# 扩展打包（若手动生成）
+*.crx
+*.pem
+
+# 用户导出的账号文件（切勿误加到仓库）
+windsurf_accounts_*.json
+*-accounts*.json
+*-credentials*.txt
+
+# （可选）本机 Cursor/IDE 私密状态——若你希望共享 .vscode/extensions.json，可删掉下一行或改为更细规则
+#.vscode/

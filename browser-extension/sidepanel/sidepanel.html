@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windsurf 账号注册</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-brand">
+      <div class="logo-mark">W</div>
+      <div class="header-text">
+        <h1 class="header-title">Windsurf 账号注册</h1>
+        <p class="header-subtitle">批量注册后手动导出 JSON</p>
+      </div>
+    </div>
+    <button class="btn-icon" id="btnTheme" title="切换主题">
+      <span class="icon-moon">月</span>
+      <span class="icon-sun">日</span>
+    </button>
+  </header>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2 class="panel-title">批量注册</h2>
+        <p class="panel-desc">按顺序执行，注册完成后可手动导出</p>
+      </div>
+    </div>
+    <div class="control-row">
+      <label class="field">
+        <span class="field-label">数量</span>
+        <input type="number" id="inputCount" value="1" min="1" max="100" class="input-field">
+      </label>
+      <button class="btn btn-primary" id="btnStart">开始注册</button>
+      <button class="btn btn-danger" id="btnStop" style="display:none">停止</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-value" id="statDone">0</span>
+        <span class="stat-label">已完成</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="statTotal">0</span>
+        <span class="stat-label">总数量</span>
+      </div>
+      <div class="stat-card stat-card-wide">
+        <span class="stat-value stat-current" id="statCurrent">-</span>
+        <span class="stat-label">当前邮箱</span>
+      </div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2 class="panel-title">实时日志</h2>
+      <button class="btn btn-secondary btn-sm" id="btnClearLog">清空</button>
+    </div>
+    <div class="log-area" id="logArea"></div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head panel-head-wrap">
+      <div class="records-head">
+        <h2 class="panel-title">账号记录</h2>
+        <span class="record-count" id="recordCount">0</span>
+      </div>
+      <div class="panel-actions">
+        <button class="btn btn-secondary btn-sm" id="btnExport">导出 JSON</button>
+        <button class="btn btn-secondary btn-sm" id="btnClearRecords">清空记录</button>
+      </div>
+    </div>
+    <div class="records-list" id="recordsList">
+      <div class="records-empty">暂无注册记录</div>
+    </div>
+  </section>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline';">
+  <title>Windsurf 账号管理台</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="brand-mark">W</div>
+        <div class="brand-copy">
+          <h1>Windsurf 账号管理台</h1>
+          <p>企业级账号切换、额度查看与明细管理</p>
+        </div>
+      </div>
+      <div class="topbar-status">
+        <span class="proxy-status" id="proxyStatus">代理检测中...</span>
+        <span class="account-count" id="accountCount">0 个账号</span>
+      </div>
+    </header>
+
+    <section class="toolbar">
+      <div class="toolbar-left">
+        <button class="btn btn-primary" id="btnAdd">添加账号</button>
+        <button class="btn btn-secondary" id="btnImport">粘贴导入</button>
+        <button class="btn btn-secondary" id="btnImportFile">文件导入</button>
+        <button class="btn btn-secondary" id="btnExport">导出账号</button>
+        <button class="btn btn-secondary" id="btnRefreshAll">刷新全部</button>
+        <button class="btn btn-danger" id="btnDeleteAll">清空账号</button>
+      </div>
+      <div class="toolbar-right">
+        <input class="search-input" id="searchInput" type="text" placeholder="搜索邮箱、名称、套餐、类型">
+        <select class="filter-select" id="statusFilter">
+          <option value="all">全部状态</option>
+          <option value="active">可用</option>
+          <option value="failed">失败</option>
+          <option value="unknown">未知</option>
+        </select>
+        <select class="filter-select" id="typeFilter">
+          <option value="all">全部类型</option>
+          <option value="devin-session">Devin 账号</option>
+          <option value="api-key">普通账号</option>
+          <option value="missing">缺少 Token</option>
+        </select>
+      </div>
+    </section>
+
+    <main class="page-body">
+      <section class="stats-strip" id="overviewStats"></section>
+      <section class="surface-section" id="currentAccountPanel"></section>
+      <section class="list-section">
+        <div class="section-heading section-heading-inline">
+          <div>
+            <h2>账号列表</h2>
+            <p>支持切换、刷新、查看密码与 Token，并直接复制敏感字段</p>
+          </div>
+        </div>
+        <div class="account-list" id="accountList">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-title">暂无账号</div>
+            <div class="empty-desc">点击“添加账号”开始录入，或通过导入批量添加。</div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-overlay" id="addModal" style="display:none">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>添加账号</h2>
+        <button class="modal-close" id="closeAddModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>邮箱</label>
+          <input type="email" id="inputEmail" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>密码</label>
+          <input type="password" id="inputPassword" placeholder="请输入密码">
+        </div>
+        <div class="modal-status" id="addStatus"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelAdd">取消</button>
+        <button class="btn btn-primary" id="confirmAdd">确认添加</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="importModal" style="display:none">
+    <div class="modal modal-wide">
+      <div class="modal-header">
+        <h2>导入账号</h2>
+        <button class="modal-close" id="closeImportModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="hint">支持文本格式：每行一个 `邮箱:密码`</p>
+        <p class="hint">也支持 JSON 格式：`[{"email":"...","password":"..."}]`</p>
+        <textarea id="importText" rows="12" placeholder="user1@example.com:password1&#10;user2@example.com:password2"></textarea>
+        <div class="modal-status" id="importStatus"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelImport">取消</button>
+        <button class="btn btn-primary" id="confirmImport">开始导入</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

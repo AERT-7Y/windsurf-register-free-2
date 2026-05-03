@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Windsurf Auto Register",
+  "version": "1.0.0",
+  "description": "Batch auto-register Windsurf accounts using temporary emails",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs",
+    "sidePanel",
+    "cookies",
+    "browsingData"
+  ],
+  "host_permissions": [
+    "https://windsurf.com/*",
+    "https://api.m2u.io/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://windsurf.com/account/register*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://windsurf.com/profile*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Windsurf Auto Register",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
