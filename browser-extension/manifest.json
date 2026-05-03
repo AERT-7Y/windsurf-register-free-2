@@ -24,6 +24,12 @@
   },
   "content_scripts": [
     {
+      "matches": ["https://windsurf.com/*"],
+      "js": ["antifingerprint.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
       "matches": ["https://windsurf.com/account/register*"],
       "js": ["content.js"],
       "run_at": "document_idle"

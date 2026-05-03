@@ -4,6 +4,7 @@ const windsurfService = require('../services/windsurf');
 const db = require('../services/database');
 const switchService = require('../services/switch');
 const directSwitch = require('../services/direct-switch');
+const antiDetect = require('../services/anti-detect');
 
 let mainWindow;
 
@@ -434,6 +435,36 @@ ipcMain.handle('accounts:switch', async (event, id) => {
     return { success: true, email: result.email };
   } catch (e) {
     console.log(`[SWITCH] Error: ${e.message}`);
+    return { success: false, error: e.message };
+  }
+});
+
+ipcMain.handle('antidetect:reset', async () => {
+  try {
+    const result = antiDetect.fullReset();
+    return { success: result.success, results: result.results };
+  } catch (e) {
+    return { success: false, error: e.message };
+  }
+});
+
+ipcMain.handle('antidetect:checkStatus', async () => {
+  try {
+    const fs = require('fs');
+    const storagePath = antiDetect.getStorageJsonPath();
+    const installPath = antiDetect.getInstallationIdPath();
+
+    return {
+      storageJson: {
+        exists: fs.existsSync(storagePath),
+        path: storagePath,
+      },
+      installationId: {
+        exists: fs.existsSync(installPath),
+        path: installPath,
+      },
+    };
+  } catch (e) {
     return { success: false, error: e.message };
   }
 });

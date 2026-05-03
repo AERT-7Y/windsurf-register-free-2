@@ -78,11 +78,20 @@ mindmap
       临时邮箱联动
       DOM 自动化
       Cookie与站点数据清理
+      反指纹保护
+        Canvas 随机化
+        WebGL 伪装
+        WebRTC 防护
+        webdriver 隐藏
     桌面管理程序
       账号增删改查
       会话刷新与重登
       IDE 账号切换
       本地持久化
+      反检测系统
+        机器标识符重置
+        installation_id 重置
+        storage.json 保护
 ```
 
 ### 扩展：单条注册时序（简化）
@@ -290,19 +299,71 @@ flowchart TD
 
 ---
 
-## 五、两个部分如何衔接（数据层面）
+## 五、反检测与反指纹（新增）
+
+### 5.1 桌面端：机器标识符重置
+
+2026年3月 Windsurf 实施配额制后，加强了多账号检测力度。项目新增 **anti-detect.js** 模块，在每次账号切换时自动重置以下标识符：
+
+| 标识符 | 存储位置 | 格式 | 作用 |
+|--------|---------|------|------|
+| `telemetry.machineId` | `%APPDATA%\Windsurf\User\globalStorage\storage.json` | 64位十六进制 | 主要机器识别ID |
+| `telemetry.macMachineId` | 同上 | 64位十六进制 | MAC地址衍生ID |
+| `telemetry.devDeviceId` | 同上 | UUID | 设备标识符 |
+| `telemetry.sqmId` | 同上 | `{大写UUID}` | 微软SQM兼容标识 |
+| `installation_id` | `%USERPROFILE%\.codeium\windsurf\installation_id` | UUID | 安装标识 |
+
+**自动触发时机：**
+- 账号切换完成后（`switchAccountToDB()` 返回前）
+- 重置结果会写入切换返回值，便于 UI 层展示
+
+**手动触发：**
+- IPC 接口：`antidetect:reset`（可通过 UI 按钮调用）
+- 状态检查：`antidetect:checkStatus`（检查文件是否存在）
+
+### 5.2 浏览器扩展：反指纹保护
+
+扩展在 `document_start` 阶段向所有 `windsurf.com` 页面注入 `antifingerprint.js`，提供以下保护：
+
+| 保护项 | 原理 | 效果 |
+|--------|------|------|
+| `navigator.webdriver` 隐藏 | 重写属性描述符 | 消除自动化工具标志 |
+| Canvas 指纹随机化 | 向 `toDataURL()` 注入微小噪声 | 每次访问产生不同指纹 |
+| WebGL 渲染器伪装 | 拦截 `getParameter()` 返回随机显卡型号 | 模拟不同硬件环境 |
+| WebRTC 本地 IP 保护 | 封装 `RTCPeerConnection` | 防止真实 IP 泄漏 |
+| AudioContext 干扰 | 在创建压缩机时注入噪声 | 干扰音频指纹检测 |
+| 密码生成加密安全 | 使用 `crypto.getRandomValues()` | 消除 `Math.random()` 的可预测性 |
+
+**重要说明：**
+- 反指纹脚本在所有 `windsurf.com` 页面加载时自动激活
+- 无需用户手动操作，扩展加载即生效
+- 不影响注册流程的正常使用
+
+### 5.3 检测维度对照
+
+Windsurf 当前（2026年）的检测维度包括：
+
+1. **设备指纹**：`machineId` + `macMachineId` + `devDeviceId` → **已覆盖**
+2. **安装标识**：`installation_id` → **已覆盖**
+3. **浏览器指纹**：Canvas + WebGL + webdriver 标志 → **已覆盖**
+4. **网络关联**：IP + 代理线路 → **需用户自行配置代理**
+5. **行为关联**：操作节奏、使用模式 → **部分覆盖（扩展注册有随机延时）**
+
+---
+
+## 六、两个部分如何衔接（数据层面）
 
 扩展导出的 JSON 为**对象数组**，每个对象至少包含**邮箱**与**密码**字段（键名与解析兼容别名见桌面程序导入逻辑）。桌面程序导入时会逐条尝试走登录链，将成功或失败状态写回本地库。
 
 ---
 
-## 六、合规与免责
+## 七、合规与免责
 
 除上文 **「研究与溯源声明」** 外，请自行遵守目标产品、身份服务、临时邮箱服务及所在地的法律与条款。本仓库按「原样」提供，**不保证可用性、不保证与任何第三方服务长期兼容**。因使用本仓库导致的账号限制、封禁或数据问题，**须由使用者自行承担**。
 
 ---
 
-## 七、许可证与工程规范
+## 八、许可证与工程规范
 
 发布到公开平台前，请在本仓库根目录自行添加 `LICENSE`（SPDX 标识建议写入 README 徽章与 `package.json` 等元数据）。请勿将个人账号、密钥、本地数据库或抓包导出纳入版本控制；建议配合 `.gitignore` 与 CI 秘密扫描使用。
 

@@ -37,14 +37,34 @@ function generatePassword() {
   const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const digits = '0123456789';
   let pw = '';
-  pw += lower[Math.floor(Math.random() * lower.length)];
-  pw += upper[Math.floor(Math.random() * upper.length)];
-  pw += digits[Math.floor(Math.random() * digits.length)];
+  
+  const array1 = new Uint32Array(1);
+  crypto.getRandomValues(array1);
+  pw += lower[array1[0] % lower.length];
+  
+  const array2 = new Uint32Array(1);
+  crypto.getRandomValues(array2);
+  pw += upper[array2[0] % upper.length];
+  
+  const array3 = new Uint32Array(1);
+  crypto.getRandomValues(array3);
+  pw += digits[array3[0] % digits.length];
+  
   const all = lower + upper + digits;
   for (let i = 3; i < 14; i++) {
-    pw += all[Math.floor(Math.random() * all.length)];
+    const array = new Uint32Array(1);
+    crypto.getRandomValues(array);
+    pw += all[array[0] % all.length];
   }
-  return pw.split('').sort(() => Math.random() - 0.5).join('');
+  
+  const pwArray = pw.split('');
+  for (let i = pwArray.length - 1; i > 0; i--) {
+    const jArray = new Uint32Array(1);
+    crypto.getRandomValues(jArray);
+    const j = jArray[0] % (i + 1);
+    [pwArray[i], pwArray[j]] = [pwArray[j], pwArray[i]];
+  }
+  return pwArray.join('');
 }
 
 function generateName() {
@@ -445,20 +465,6 @@ async function registerNext() {
     });
     log('表单填写命令已发送');
     return;
-
-    // Step 7: Send fill command to content script
-    log('发送表单填写命令...');
-    chrome.tabs.sendMessage(tab.id, {
-      type: 'FILL_REGISTRATION',
-      data: {
-        firstName: name.first,
-        lastName: name.last,
-        email: mailbox.email,
-        password: password,
-      }
-    }).catch(e => {
-      log(`发送消息失败: ${e.message}`, 'error');
-    });
 
   } catch (e) {
     // If aborted, don't retry

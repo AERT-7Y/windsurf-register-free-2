@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const https = require('https');
 const os = require('os');
 const { execSync, execFileSync } = require('child_process');
+const antiDetect = require('./anti-detect');
 
 function log(msg) { console.log('[DirectSwitch]', msg); }
 
@@ -465,10 +466,13 @@ async function switchAccountToDB(account) {
       throw new Error('database verification failed after switch');
     }
 
+    const antiDetectResult = antiDetect.fullReset();
+    log(`anti-detect reset: ${antiDetectResult.success ? 'success' : 'partial failure'}`);
+
     log('========================================');
     log(`switch finished: ${account.email}`);
     log('========================================');
-    return { success: true, email: account.email };
+    return { success: true, email: account.email, antiDetect: antiDetectResult };
   } catch (e) {
     try { db.close(); } catch {}
     log(`switch failed: ${e.message}`);
@@ -476,4 +480,4 @@ async function switchAccountToDB(account) {
   }
 }
 
-module.exports = { switchAccountToDB, isAdmin, readLiveAuthStateFromFile };
+module.exports = { switchAccountToDB, isAdmin, readLiveAuthStateFromFile, antiDetect };
