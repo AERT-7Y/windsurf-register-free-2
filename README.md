@@ -11,6 +11,7 @@
 
 | 文档 | 说明 |
 |------|------|
+| [TUTORIAL.md](TUTORIAL.md) | **分步教程**：扩展加载、桌面端启动、配置要点、推到 GitHub |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | 参与贡献、分支与提交约定、禁止向仓库提交敏感信息 |
 | [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) | 社区参与者行为准则 |
 | [SECURITY.md](SECURITY.md) | 安全漏洞与合规问题的反馈方式 |
